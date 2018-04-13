@@ -13,5 +13,7 @@ public class Values {
     
     public static int totalItems=10;
     public static int initialpop=100;
-    public static int capacity=25;
+    public static int capacity=30;
+    public static int totalGeneration=100;
+    
 }

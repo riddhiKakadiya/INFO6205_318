@@ -7,7 +7,10 @@ package com.me.knapsack;
 
 import static com.me.knapsack.Values.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
 
 /**
@@ -16,32 +19,27 @@ import java.util.Random;
  */
 public class Main {
     public static List<Product> productList=new ArrayList<>();
-    
+    public static Population pop;
     public static void main(String[] args){
         
         createProducts();
         System.out.println(productList.size() + " Products have been created as:");
-        System.out.println("Product No.    Price      Volume");
+        System.out.println("Product No.    Price      Weight");
         for (int i = 0; i < productList.size(); i++) {
             System.out.println(i + "            " + productList.get(i).getPrice() + "           " + productList.get(i).getWeight());
         }
         
-        Population initPop=new Population(initialpop);
+        /////Initialize population
+        pop=new Population(initialpop);
         
-        System.out.println(initialpop + " Initial chromosomes have been generated as:");
-        System.out.println("Chromosome      Weight      Value       Fitness");
-        for(int i=0;i<initialpop;i++){
-            for(int g:initPop.getIndividuals().get(i).getGenes()){
-                System.out.print(g);
-                }
-            System.out.println("        " + initPop.getIndividuals().get(i).getWeight()+ "          " + initPop.getIndividuals().get(i).getPrice()
-            + "           " + initPop.getIndividuals().get(i).getFitness());
-    
+        tracker();
+        for(int i=1;i<2;i++){
+            selection();
+            tracker();
         }
         
         
     } 
-    /////Initialize population
         
 //    initially generates products
     public static void createProducts(){
@@ -52,5 +50,41 @@ public class Main {
             p.setPrice(rand.nextInt(10)+1);
             productList.add(p);
         }
+    }
+    
+    public static void tracker(){
+        System.out.println(initialpop + " Initial chromosomes have been generated as:");
+        System.out.println("Chromosome      Weight      Value       Fitness");
+        for(int i=0;i<pop.getIndividuals().size();i++){
+            for(int g:pop.getIndividuals().get(i).getGenes()){
+                System.out.print(g);
+                }
+            System.out.println("        " + pop.getIndividuals().get(i).getWeight()+ "          " + pop.getIndividuals().get(i).getPrice()
+            + "           " + pop.getIndividuals().get(i).getFitness());
+    
+        }
+
+    }
+    
+    public static void selection(){
+        Comparator<Individual> sort=(Individual ind1, Individual ind2)->{
+            int cmp1=ind1.getFitness();
+            int cmp2=ind2.getFitness();
+            if(cmp2>cmp1) return 1;
+            
+            else if(cmp2<cmp1) return -1;
+            
+            else return 0;
+        };
+        
+        Queue<Individual> q=new PriorityQueue<>(sort);
+        List<Individual> individuals=pop.getIndividuals();
+        for(int i=0;i<individuals.size();i++) q.add(individuals.get(i));
+        int halfpop=individuals.size()/2;
+        individuals.clear();
+        for(int i=0;i<halfpop;i++){
+            individuals.add(q.poll());
+        }
+        
     }
 }

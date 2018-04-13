@@ -6,13 +6,14 @@
 package com.me.knapsack;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author HP
  */
 public class Population {
-    public static ArrayList<Individual> individuals=new ArrayList<Individual>();
+    public static List<Individual> individuals=new ArrayList<Individual>();
     private int totalFitness;
     
     public Population(int initialpop){
@@ -25,13 +26,15 @@ public class Population {
         calcBestSolution();
     }
 
-    public ArrayList<Individual> getIndividuals() {
+    public static List<Individual> getIndividuals() {
         return individuals;
     }
 
-    public void setIndividuals(ArrayList<Individual> individuals) {
-        this.individuals = individuals;
+    public static void setIndividuals(List<Individual> individuals) {
+        Population.individuals = individuals;
     }
+
+    
 
 
     public int getTotalFitness() {
