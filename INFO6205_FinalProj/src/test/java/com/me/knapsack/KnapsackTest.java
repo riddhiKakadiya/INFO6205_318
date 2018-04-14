@@ -1,32 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.me.knapsack;
 
-import java.util.Iterator;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static com.me.knapsack.Main.productList;
+import static com.me.knapsack.Values.totalItems;
+import java.util.Random;
+import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
  * @author HP
  */
 public class KnapsackTest {
-    
-     @Test
-    public void test0() {
-        
+
+    @Test
+    public void generateGene() {
+        //checks whether both genes are different
+        Random rand = new Random();
+        for (int i = 0; i < totalItems; i++) {
+            Product p = new Product();
+
+            p.setWeight(rand.nextInt(10) + 1);
+            p.setPrice(rand.nextInt(10) + 1);
+
+            productList.add(p);
+        }
+
+        Population pop = new Population(totalItems);
+        Assert.assertFalse(pop.individuals.get(1).getGenes().equals(pop.individuals.get(0).getGenes()));
     }
 
     @Test
-    public void test1() {
+    public void generateProduct() {
+        //test whether sack size is 20
+        Random rand = new Random();
+        for (int i = 0; i < totalItems; i++) {
+            Product p = new Product();
+
+            p.setWeight(rand.nextInt(10) + 1);
+            p.setPrice(rand.nextInt(10) + 1);
+
+            productList.add(p);
+        }
+
+        Assert.assertEquals(productList.size(), 20);
     }
 
+    @Test
+    public void selectionTest() {
 
+    }
 }
