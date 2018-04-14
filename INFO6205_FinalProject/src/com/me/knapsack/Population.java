@@ -15,6 +15,7 @@ import java.util.List;
 public class Population {
     public static List<Individual> individuals=new ArrayList<Individual>();
     private int totalFitness;
+    private static Individual fittest;
     
     public Population(int initialpop){
         for(int i=0;i<initialpop;i++ ){
@@ -23,9 +24,16 @@ public class Population {
             individuals.add(individual);
         }
         calcTotalFitness();
-        calcBestSolution();
     }
 
+    public Individual getFittest() {
+        return fittest;
+    }
+
+    public void setFittest(Individual fittest) {
+        this.fittest = fittest;
+    }
+    
     public static List<Individual> getIndividuals() {
         return individuals;
     }
@@ -53,6 +61,23 @@ public class Population {
     }
  
    public static void calcBestSolution(){
-       
-   }
+       int max=0;
+       int fitindex=0;
+       for(int i=0;i<individuals.size();i++){
+             if(individuals.get(i).getFitness()>max){
+                max=individuals.get(i).getFitness();
+                fitindex=i;
+       }
+     }
+       fittest=individuals.get(fitindex);
+  }
+   
+       public double calculateAverage(){
+        double sum=0;
+        for(int i=0;i<individuals.size();i++){
+            sum+=individuals.get(i).getFitness();
+        }
+        return sum/individuals.size();
+    }
+
 }
