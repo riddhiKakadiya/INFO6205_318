@@ -1,4 +1,5 @@
 GENETIC ALGORITHM - 0-1 KNAPSACKPROBLEM
+
 We have tried to solve 0-1 knapsack problem using genetic algorithm. This project requires java 1.8 to run.
 Steps to run the project:
 1.	Clone the project.
