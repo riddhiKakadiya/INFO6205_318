@@ -36,7 +36,7 @@ public class KnapsackTest {
     public void generateProduct() {
         //test whether sack size is 20
 
-        Assert.assertEquals(productList.size(), 20);
+        Assert.assertEquals(productList.size(), totalItems);
     }
 
     @Test

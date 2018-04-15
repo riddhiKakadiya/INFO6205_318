@@ -16,17 +16,27 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author HP
  */
-public class Main {
+public class Main extends Application{
 
     public static List<Product> productList = new ArrayList<>();
+    public static List<Integer> fitnessTrack = new ArrayList<>();
     public static Population pop;
+    final static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) throws IOException {
+        org.apache.log4j.BasicConfigurator.configure();
 
         createProducts();
         System.out.println(productList.size() + " Products have been created as:");
@@ -37,14 +47,15 @@ public class Main {
 
         /////Initialize population
         pop = new Population(initialpop);
-
         tracker(0);
-        for (int i = 1; i < 15; i++) {
+        
+        ////run for totalGenerations 
+        for (int i = 1; i < totalGeneration; i++) {
             selection();
             evolvePopulation();
             tracker(i);
         }
-
+        launch();
     }
 
 //    initially generates products from text file
@@ -73,23 +84,26 @@ public class Main {
 
     public static void tracker(int generationCount) {
         pop.calcBestSolution();
-        System.out.println("For generation: " + generationCount + " chromosomes have been generated as:");
-        System.out.println("Best solution of the generation:"+pop.getFittest().getFitness());
-        System.out.println("Average Fitness of the generation:"+pop.calculateAverage());
-        System.out.println("Chromosome               Weight      Value       Fitness");
-        for (int i = 0; i < pop.getIndividuals().size(); i++) {
-            for (int g : pop.getIndividuals().get(i).getGenes()) {
-                System.out.print(g);
-            }
-            System.out.println("        " + pop.getIndividuals().get(i).getWeight() + "          " + pop.getIndividuals().get(i).getPrice()
-                    + "           " + pop.getIndividuals().get(i).getFitness());
-
-        }
+//        logger.info("Best Chromosone of the Generation "+generationCount+": "+pop.getFittest().toString());
+        logger.info("Fitness of fittest chromosone of Generation "+generationCount+": "+pop.getFittest().getFitness());
+        logger.info("Average Fitness: "+pop.calculateAverage());
+        System.out.println("");
+        
+        ////to print each chromosone of population
+//        System.out.println("Chromosome               Weight      Value       Fitness");
+//        for (int i = 0; i < pop.getIndividuals().size(); i++) {
+//            for (int g : pop.getIndividuals().get(i).getGenes()) {
+//                System.out.print(g);
+//            }
+//            System.out.println("        " + pop.getIndividuals().get(i).getWeight() + "          " + pop.getIndividuals().get(i).getPrice()
+//                    + "           " + pop.getIndividuals().get(i).getFitness());
+//
+//        }
         
         
 
     }
-    /////////select 
+    /////////select 75% of the fittest individuals
     public static void selection() {
         Comparator<Individual> sort = (Individual ind1, Individual ind2) -> {
             int cmp1 = ind1.getFitness();
@@ -123,12 +137,14 @@ public class Main {
             Individual i2 = individuals.get(i + 1);
             crossover(i1, i2, individuals);
         }
+                fitnessTrack.add(pop.getFittest().getFitness());
+
     }
     ///perform crossover between two fittest individual
     public static void crossover(Individual i1, Individual i2, List<Individual> individuals) {
         Random rand = new Random();
         Individual child = new Individual();
-        for (int i = 0; i < individuals.get(i).getGenes().size(); i++) {
+        for (int i = 0; i < i1.getGenes().size(); i++) {
             int r = rand.nextInt(2);
             if (r == 0) {
                 child.getGenes().add(i2.getGenes().get(i));   //for each gene from parents'
@@ -147,5 +163,33 @@ public class Main {
           int pos = random.nextInt(child.getGenes().size()); 
           if(child.getGenes().get(pos)==0)  child.getGenes().set(pos,1);
           
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("Fitness chart");
+        //defining the axes
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Generation");
+        yAxis.setLabel("Fitness");
+        yAxis.setForceZeroInRange(false);
+        //creating the chart
+        final LineChart<Number,Number> lineChart = 
+                new LineChart<Number,Number>(xAxis,yAxis);
+                
+        lineChart.setTitle("Fitness Tracker for 0-1 Knapsack problem");
+        //defining a series
+        XYChart.Series series = new XYChart.Series();
+        series.setName("My portfolio");
+        //populating the series with data
+        for(int i=0;i<fitnessTrack.size();i++){
+        series.getData().add(new XYChart.Data(i, fitnessTrack.get(i)));
+        }
+        Scene scene  = new Scene(lineChart,800,600);
+        lineChart.getData().add(series);
+       
+        stage.setScene(scene);
+        stage.show();
     }
 }

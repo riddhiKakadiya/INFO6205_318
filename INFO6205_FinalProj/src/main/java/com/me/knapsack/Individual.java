@@ -15,12 +15,12 @@ import java.util.Random;
  * @author HP
  */
 public class Individual {
-   private ArrayList<Integer> genes = new ArrayList<>();
+   public ArrayList<Integer> genes = new ArrayList<>();
    public int weight=0;
    public int price=0;
    public int fitness=0;
 
-    public ArrayList<Integer> getGenes() {
+    public  ArrayList<Integer> getGenes() {
         return genes;
     }
 
@@ -74,5 +74,14 @@ public class Individual {
        if(this.weight<=capacity){
            this.fitness=this.price;
        }
+   }
+   
+   @Override
+   public String toString(){
+   String geneString = "";
+      for(int i:genes){
+          geneString+=i;
+      }
+      return geneString;
    }
 }
