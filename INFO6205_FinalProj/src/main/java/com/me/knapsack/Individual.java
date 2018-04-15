@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.me.knapsack;
 
 import static com.me.knapsack.Values.capacity;
@@ -10,17 +5,14 @@ import static com.me.knapsack.Values.totalItems;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- *
- * @author HP
- */
 public class Individual {
-   public ArrayList<Integer> genes = new ArrayList<>();
-   public int weight=0;
-   public int price=0;
-   public int fitness=0;
 
-    public  ArrayList<Integer> getGenes() {
+    public ArrayList<Integer> genes = new ArrayList<>();
+    public int weight = 0;
+    public int price = 0;
+    public int fitness = 0;
+
+    public ArrayList<Integer> getGenes() {
         return genes;
     }
 
@@ -51,37 +43,37 @@ public class Individual {
     public void setFitness(int fitness) {
         this.fitness = fitness;
     }
-   
-   public void generateGenes(){
+
+    public void generateGenes() {
         Random rand = new Random();
-        for(int i=0; i< totalItems; i++){
-                this.genes.add(rand.nextInt(2));
+        for (int i = 0; i < totalItems; i++) {
+            this.genes.add(rand.nextInt(2));
         }
         calculateFitness();
-   }
-   
-   public void calculateFitness(){
-       int tempPrice=0;
-       int tempWeight=0;
-       for(int i=0;i<totalItems;i++){
-           if(this.genes.get(i)==1){
-               tempWeight=tempWeight+Main.productList.get(i).getWeight();
-               tempPrice=tempPrice+Main.productList.get(i).getPrice();
-           }
-       }
-       this.price=tempPrice;
-       this.weight=tempWeight;
-       if(this.weight<=capacity){
-           this.fitness=this.price;
-       }
-   }
-   
-   @Override
-   public String toString(){
-   String geneString = "";
-      for(int i:genes){
-          geneString+=i;
-      }
-      return geneString;
-   }
+    }
+
+    public void calculateFitness() {
+        int tempPrice = 0;
+        int tempWeight = 0;
+        for (int i = 0; i < totalItems; i++) {
+            if (this.genes.get(i) == 1) {
+                tempWeight = tempWeight + Main.productList.get(i).getWeight();
+                tempPrice = tempPrice + Main.productList.get(i).getPrice();
+            }
+        }
+        this.price = tempPrice;
+        this.weight = tempWeight;
+        if (this.weight <= capacity) {
+            this.fitness = this.price;
+        }
+    }
+
+    @Override
+    public String toString() {
+        String geneString = "";
+        for (int i : genes) {
+            geneString += i;
+        }
+        return geneString;
+    }
 }
