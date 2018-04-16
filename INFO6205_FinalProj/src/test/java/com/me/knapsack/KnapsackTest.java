@@ -62,6 +62,7 @@ public class KnapsackTest {
     @Test
     public void evolveTest(){
         Random rand = new Random();
+        
         for (int i = 0; i < totalItems; i++) {
             Product p = new Product();
 

@@ -44,6 +44,7 @@ public class Main extends Application {
         for (int i = 1; i < totalGeneration; i++) {
             selection();
             evolvePopulation();
+            fitnessTrack.add(pop.getFittest().getFitness());
             tracker(i);
         }
         launch();
@@ -115,7 +116,6 @@ public class Main extends Application {
             Individual i2 = individuals.get(i + 1);
             crossover(i1, i2, individuals);
         }
-        fitnessTrack.add(pop.getFittest().getFitness());
 
     }
 
