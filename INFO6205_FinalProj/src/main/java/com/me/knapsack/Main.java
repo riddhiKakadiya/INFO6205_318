@@ -137,7 +137,7 @@ public class Main extends Application{
             Individual i2 = individuals.get(i + 1);
             crossover(i1, i2, individuals);
         }
-                fitnessTrack.add(pop.getFittest().getFitness());
+            fitnessTrack.add(pop.getFittest().getFitness());
 
     }
     ///perform crossover between two fittest individual
